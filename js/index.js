@@ -57,13 +57,23 @@ window.addEventListener('DOMContentLoaded', async (event) => {
         //Ahora digo que quiero extraer de la respuesta...
         //...y me lo dan en promesa: usaré gestión de promesas then-catch
         response.json().then((data)=>{
-            console.log('ESTOS SON LOS DATOS', data)
+            console.log('ESTOS SON LOS DATOS', data)+++++++++++
         }).catch(error=>{
         })
     }).catch((error)=>{
         console.error('La petición ha fallado')
     })
     */
-   
+   //AHORA VERSIONAMOS EL TROPEZÓN ANTERIOR CON AWAIT, DESPUES DE HABER PUESTO
+   // ASYNC EN LA FUNCIÓN QUE ENGLOBA ESTO
+   //El manejo de errores-catch se hace añadiendo try
+   try{
+        const response = await fetch(url)
+        const data = await response.json()
+        console.log('ESTOS SON LOS DATOS', data)//++++++++
+   } catch (error){
+       console.error('SE HA PRODUCIDO UN ERROR', error)
+   }
+
 
 });
