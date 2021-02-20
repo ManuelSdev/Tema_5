@@ -1,35 +1,24 @@
-function getTheFakinTweets(){
-    return [
-        {
-            author: "@Manuel",
-            message: "Mensaje pruebaaaaa de Manuelllll",
-            date: "19/02/2021 10:30"
-        },
-        {
-            author: "@Paquito",
-            message: "Mensaje pruebaaaaa de Paquitoooo",
-            date: "19/02/2021 23:45"
-        }
-    ]
 
-}
-
+const url = 'https://gist.githubusercontent.com/kasappeal/a8724e3f1c75ba515a8d9500f4b609e7/raw/4733ee642e4cf01e95ff4284d6e252d0706804b0/fweets.json'
 
 export default{
     //Servicio que devuelve los tuits
     getTweets: ()=>{
         const promise = new Promise ((resolve, reject) => {
-            setTimeout(() => {
-                console.log('HE CONSEGUIDO LOS TWEETS!!!!!')
-                const tweets = getTheFakinTweets()
-                if( tweets.length===0){
-                    reject(tweets)
-                }else{
-                    resolve(tweets)
-                }
-            }, 5000);
+            //const response=  await fetch(url)
+            //FORMA FEA CON THEN
+            //Fetch devuelve una promesa
+            //Si se cumple, formateamos a json mediante otra promesa
+            //Si esta se cumple, ya tenemos acceso a los datos
+            //Entonces hacemos el resolve
+            //...que usará la funcion definida en la función 
+            //conectada que consuma la promesa que devuelve getTweets
+            //OLE
+            fetch(url).then(response => response.json()).then(data=>{
+                resolve(data)
+            })
+
         })
-        console.log('TE PROMETO QUE CONSEGUIRÉ LOS TUITS, NOMÁS DEJA QUE GESTIONE LA PROMESA')
         return promise
     }
 }
