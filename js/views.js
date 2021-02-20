@@ -1,4 +1,4 @@
-
+//Aquí pongo la lógica de las vistas para separarla del resto según MVC
 //A esta vista le paso un tuit y devuelve html
 export const tweetView = (tweet)=>{
     return ` <div class="posts">
