@@ -4,7 +4,7 @@ import dataService from './services/DataService.js'
 import prueba from './prueba.js'
 
 
-window.addEventListener('DOMContentLoaded', (event) => {
+window.addEventListener('DOMContentLoaded', async (event) => {
     console.log('DOM fully loaded and parsed');
 
     const loader = document.querySelector('.lds-roller')
@@ -33,7 +33,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     const avisarDelError = (error) => {
         console.error('NO SE HAN PODIDO CARGAR LOS TWEETS')
     }
-
+    /*
     //Creamos array de objetos literales para guardar tuits
     //Luego hemos metido el array en DataService.js/ meth getTweets...
     //los pillamos de ahí mediante promesa
@@ -41,6 +41,29 @@ window.addEventListener('DOMContentLoaded', (event) => {
     //Aquí llega la función "encargo al servidor": si rula, haz usa el callback del then
     //llamando a resolve...si no rula, usa el callback del catch llamando a reject
     tweetsPromise.then(cargarTweets).catch(avisarDelError)
-
+    */
+   //Hacemos lo anterior en un solo paso
+   
+   dataService.getTweets().then(cargarTweets).catch(avisarDelError)
  
+
+
+   const url = 'https://gist.githubusercontent.com/kasappeal/a8724e3f1c75ba515a8d9500f4b609e7/raw/4733ee642e4cf01e95ff4284d6e252d0706804b0/fweets.json'
+   
+   /*//La petición al servidor no recibe datos: recibe una respuesta que contiene datos y más cosas
+   //Pongo en then lo que quiero hacer con esa respuesta
+    fetch(url).then((response)=>{
+        console.log('RESPUESTA RECIBIDA', response)
+        //Ahora digo que quiero extraer de la respuesta...
+        //...y me lo dan en promesa: usaré gestión de promesas then-catch
+        response.json().then((data)=>{
+            console.log('ESTOS SON LOS DATOS', data)
+        }).catch(error=>{
+        })
+    }).catch((error)=>{
+        console.error('La petición ha fallado')
+    })
+    */
+   
+
 });
