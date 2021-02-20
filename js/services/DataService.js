@@ -3,6 +3,7 @@ const url = 'https://gist.githubusercontent.com/kasappeal/a8724e3f1c75ba515a8d95
 
 export default{
     //Servicio que devuelve los tuits
+    /*
     getTweets: ()=>{
         const promise = new Promise (async (resolve, reject) => {
             //FORMA FEA CON THEN+++++++++++++++++++++++++++++
@@ -13,11 +14,11 @@ export default{
             //...que usará la funcion definida en la función 
             //conectada que consuma la promesa que devuelve getTweets
             //OLE
-            /*
+            
             fetch(url).then(response => response.json()).then(data=>{
                 resolve(data)
             })
-            */
+            
            //FORMA BONITA CON AWAIT
            const response=  await fetch(url)
            const data = await response.json()
@@ -25,4 +26,12 @@ export default{
         })
         return promise
     }
+    */
+   //FORMA AUTENTICA CON SYNC AWAIT SIN USAR NEW PROMISE
+   getTweets: ()=>{
+    const response=  await fetch(url)
+    const data = await response.json()
+    return data
+ })
+   }
 }
