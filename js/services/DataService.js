@@ -4,9 +4,8 @@ const url = 'https://gist.githubusercontent.com/kasappeal/a8724e3f1c75ba515a8d95
 export default{
     //Servicio que devuelve los tuits
     getTweets: ()=>{
-        const promise = new Promise ((resolve, reject) => {
-            //const response=  await fetch(url)
-            //FORMA FEA CON THEN
+        const promise = new Promise (async (resolve, reject) => {
+            //FORMA FEA CON THEN+++++++++++++++++++++++++++++
             //Fetch devuelve una promesa
             //Si se cumple, formateamos a json mediante otra promesa
             //Si esta se cumple, ya tenemos acceso a los datos
@@ -14,10 +13,15 @@ export default{
             //...que usará la funcion definida en la función 
             //conectada que consuma la promesa que devuelve getTweets
             //OLE
+            /*
             fetch(url).then(response => response.json()).then(data=>{
                 resolve(data)
             })
-
+            */
+           //FORMA BONITA CON AWAIT
+           const response=  await fetch(url)
+           const data = await response.json()
+           resolve(data)
         })
         return promise
     }
