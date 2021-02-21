@@ -7,7 +7,13 @@ import {tweetView} from '../views.js'
 export default class PostListController extends BaseController{
 
     render(tweets){
-
+        for (const tweet of tweets){
+            const article = document.createElement('article')
+            article.innerHTML= tweetView(tweet)
+            //Ahora hacemos referencia al elemento del DOM
+            //que es controlado por este controlador
+            this.element.appendChild(article)
+        }
     }
 
     
@@ -21,7 +27,7 @@ export default class PostListController extends BaseController{
             //Esos tuits los pasamos como parametros al meth cargarTweets
             this.render(tweets)
         } catch (error) {
-            avisarDelError(error)
+            console.error(error)
         }
 
     }

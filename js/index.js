@@ -13,7 +13,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
     //Otra
     loader.classList.add('hidden')
     //Selecciono el elemento que quiero controlar
-    const element = document.querySelector('.post-list')
+    const element = document.querySelector('.posts-list')
     //Creamos un controlador y le pasamos el elemento DOM que tiene que manejar
     const controller = new PostListController(element)
     //Ahora le digo al controlador que cargue los post
