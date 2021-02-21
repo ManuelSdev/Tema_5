@@ -3,20 +3,23 @@ import {tweetView} from './views.js'
 import dataService from './services/DataService.js'
 import prueba from './prueba.js'
 import PostListController from './controllers/PostListController.js';
+import LoaderController from './controllers/LoaderController.js'
 
 
 window.addEventListener('DOMContentLoaded', async (event) => {
     console.log('DOM fully loaded and parsed');
+
     const loader = document.querySelector('.lds-roller')
-    //Una forma de esconder
-    //loader.style.display='none';
-    //Otra
-    loader.classList.add('hidden')
-    //Selecciono el elemento que quiero controlar
+    const loaderController= new LoaderController(loader)
+
     const element = document.querySelector('.posts-list')
-    //Creamos un controlador y le pasamos el elemento DOM que tiene que manejar
     const controller = new PostListController(element)
-    //Ahora le digo al controlador que cargue los post
+    //creo un atributo loader en objeto controller que será un objeto loaderController
+    //Ahora puedo manejar el loader desde la clase PostListController
+    //Lo usaré en el meth loadPost, que es el que sabe cuando se han cargado los tuits
+    controller.loader= loaderController;
+    
+    
     controller.loadPost()
 
 
