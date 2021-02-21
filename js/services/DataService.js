@@ -28,10 +28,10 @@ export default{
     }
     */
    //FORMA AUTENTICA CON SYNC AWAIT SIN USAR NEW PROMISE
-   getTweets: ()=>{
+   getTweets: async ()=>{
     const response=  await fetch(url)
     const data = await response.json()
     return data
- })
+
    }
 }
