@@ -30,8 +30,13 @@ export default{
    //FORMA AUTENTICA CON SYNC AWAIT SIN USAR NEW PROMISE
    getTweets: async ()=>{
     const response=  await fetch(url)
-    const data = await response.json()
-    return data
+    if(response.ok){
+        const data =  response.json()
+        return data
+    }else{
+        throw new Error(`HTTP Error: ${response.status} `)
+    }
+ 
 
    }
 }

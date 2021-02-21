@@ -44,7 +44,17 @@ window.addEventListener('DOMContentLoaded', async (event) => {
     */
    //Hacemos lo anterior en un solo paso
    
-   dataService.getTweets().then(cargarTweets).catch(avisarDelError)
+   //dataService.getTweets().then(cargarTweets).catch(avisarDelError)
+   //VAMOS A GESTIONAR LA LINEA DE ARRIBA CON ASYNC AWAIT
+   try {
+        //Aquí ya tenemos los tuits cargados en la variable tweets
+        const tweets = await dataService.getTweets()
+        //Esos tuits los pasamos como parametros al meth cargarTweets
+        cargarTweets(tweets)
+   } catch (error) {
+       avisarDelError(error)
+   }
+
  
 
 
