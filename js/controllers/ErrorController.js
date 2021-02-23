@@ -1,13 +1,12 @@
 import BaseControler from './BaseControler.js'
 import { errorView } from '../views.js'
-import pubSub from '../services/Pubsub.js'
 
 export default class ErrorController extends BaseControler{
 
     constructor(element){
         super(element)
         //Cuando se produzca el evento error, lo capturo y a llamo al meth showError
-        pubSub.subscribe('error', (error)=>{
+        this.subscribe(this.events.ERROR, (error)=>{
             this.showError(error)
         })
     }

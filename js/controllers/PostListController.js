@@ -2,7 +2,7 @@
 import BaseController from './BaseControler.js'
 import dataService from '../services/DataService.js'
 import {tweetView} from '../views.js'
-import pubSub from '../services/Pubsub.js'
+
 
 
 export default class PostListController extends BaseController{
@@ -20,7 +20,7 @@ export default class PostListController extends BaseController{
     
     async loadPost(){
         //En index.js añadi el atributo loader a una instancia de PostListController...lo uso
-        pubSub.publish('startLoading', {})
+        this.publish(this.events.START_LOADING, {})
         try {
             //this.loader.showLoading()
             //Aquí ya tenemos los tuits cargados en la variable tweets
@@ -29,11 +29,11 @@ export default class PostListController extends BaseController{
             this.render(tweets)
         } catch (error) {
             console.error(error)
-            pubSub.publish('error', error)
+            this.publish(this.events.ERROR, error)
         } finally{
             //Esto se ejecuta siempre, vaya bien (try) o mal (catch)
             //this.loader.hideLoading()
-            pubSub.publish('finishLoading', {})
+            this.publish(this.events.FINISH_LOADING, {})
         }
     }
 }
