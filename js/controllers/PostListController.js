@@ -1,5 +1,5 @@
 //Importamos clase de la que esta hereda
-import BaseController from './BaseControler.js'
+import BaseController from './BaseController.js'
 import dataService from '../services/DataService.js'
 import {tweetView} from '../views.js'
 

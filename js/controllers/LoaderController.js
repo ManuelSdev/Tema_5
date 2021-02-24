@@ -1,6 +1,6 @@
-import BaseControler from './BaseControler.js'
+import BaseController from './BaseController.js'
 
-export default class LoaderController extends BaseControler{
+export default class LoaderController extends BaseController{
 
     constructor(element){
         super(element)

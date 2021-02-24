@@ -1,7 +1,7 @@
-import BaseControler from './BaseControler.js'
+import BaseController from './BaseController.js'
 import { errorView } from '../views.js'
 
-export default class ErrorController extends BaseControler{
+export default class ErrorController extends BaseController{
 
     constructor(element){
         super(element)
