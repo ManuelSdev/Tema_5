@@ -22,6 +22,8 @@ export default class RegisterFormController extends BaseController{
             try {
                 const data = await dataService.registerUser(user)
                 alert('Usuario creado con éxito!!')
+                //Nos redirige a login.html si el try va ok
+                window.location.href="/login.html"
                 console.log('USUARIO CREADO', data)
             } catch(error) {
                 this.publish(this.events.ERROR, error);
