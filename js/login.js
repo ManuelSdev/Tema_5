@@ -1,8 +1,8 @@
-//Este register.js controlará la pagina de resgistro register.html
+//Este login.js controlará la pagina de resgistro login.html
 
 import LoaderController from './controllers/LoaderController.js'
 import ErrorController from './controllers/ErrorController.js'
-import RegisterFormController from './controllers/LoginFormController.js'
+import LoginFormController from './controllers/LoginFormController.js'
 
 
 window.addEventListener('DOMContentLoaded', async (event) => {
