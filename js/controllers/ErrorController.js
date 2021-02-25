@@ -6,6 +6,7 @@ export default class ErrorController extends BaseController{
     constructor(element){
         super(element)
         //Cuando se produzca el evento error, lo capturo y a llamo al meth showError
+        
         this.subscribe(this.events.ERROR, (error)=>{
             this.showError(error)
         })

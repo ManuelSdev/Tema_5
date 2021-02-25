@@ -4,13 +4,13 @@ export default class BaseController{
     constructor(element){
         //la variable element almacena el nodo concreto que controlará
         //cada controlador
-        this.element=element
-        this.pubSub=pubSub
+        this.element=element;
+        this.pubSub=pubSub;
         this.events ={
             START_LOADING: 'startLoading',
             FINISH_LOADING: 'finishLoading',
             ERROR: 'error'
-        }
+        };
     }
     //EventHandler es la callback que indica que hacer al escuchar el evento
     subscribe(eventName, eventHandler){

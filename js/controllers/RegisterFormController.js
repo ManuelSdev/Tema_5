@@ -1,4 +1,5 @@
 import BaseController from "./BaseController.js";
+import dataService from '../services/DataService.js'
 
 export default class RegisterFormController extends BaseController{
     constructor(element){
@@ -7,10 +8,26 @@ export default class RegisterFormController extends BaseController{
     }
     //Este es el manejador de eventos para el submit
     attachEventListener(){
-        this.element.addEventListener('submit', (event)=>{
+        this.element.addEventListener('submit', async (event)=>{
             //Evitamos que se envie el formulario (comportamiento por defecto)
             event.preventDefault()
-            console.log('SE ENVIA EL FORMULARIO', this.element,validity)
+            //Muestra en consola los elementos del form al pulsar login
+            console.log('SE ENVIA EL FORMULARIO', this.element.elements)
+            const user={
+                //Los datos que metemos están en la propiedad value dentro de cada name
+                username: this.element.elements.email.value,
+                password: this.element.elements.password.value
+            }
+            this.publish(this.events.START_LOADING)
+            try {
+                const data = await dataService.registerUser(user)
+                alert('Usuario creado con éxito!!')
+                console.log('USUARIO CREADO', data)
+            } catch(error) {
+                this.publish(this.events.ERROR, error);
+            } finally {
+                this.publish(this.events.FINISH_LOADING);
+            }
         })
 
         //Voy a seleccionar los campos del form para añadir evento que permita saber
