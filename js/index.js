@@ -5,6 +5,8 @@ import prueba from './prueba.js'
 import PostListController from './controllers/PostListController.js';
 import LoaderController from './controllers/LoaderController.js'
 import ErrorController from './controllers/ErrorController.js'
+import NewTweetOrLoginController from './controllers/NewTweetOrLoginController.js';
+
 
 window.addEventListener('DOMContentLoaded', async (event) => {
     console.log('DOM fully loaded and parsed');
@@ -25,4 +27,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
     const errorController = new ErrorController(errorsElement)
     //Probamos funcionamiento
     //errorController.showError('ERROR DE PRUEBAAAAAAAAA')
+
+    const newTweetButtons = document.querySelector('.new-tweet');
+    new NewTweetOrLoginController(newTweetButtons);
 });

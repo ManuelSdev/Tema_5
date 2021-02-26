@@ -35,11 +35,23 @@ export default {
     */
     //FORMA AUTENTICA CON SYNC AWAIT SIN USAR NEW PROMISE
     getTweets: async () => {
-        const url=`${BASE_URL}/api/posts`
+       // const url=`${BASE_URL}/api/posts`
+       const url=`${BASE_URL}/api/messages?_expand=user`
         const response = await fetch(url)
         if (response.ok) {
             const data = await response.json()
-            return data
+            //En lugar de retornar directamente los datos del viejo json, manipulamos 
+            //los datos del nuevo json antes de retornar
+            //Vamos a meter los valores del nuevo json cambiando los nombres de los atributos que los contienen
+            //Queremos atributos con nombres como author, message, y date para que se lo trague el view.js
+            //return data
+            return data.map(tweet =>{
+                return{
+                    message: tweet.message,
+                    date: tweet.createdAt,
+                    author: tweet.user.username
+                }
+            })
         } else {
             throw new Error(`HTTP Error: ${response.status} `)
         }
@@ -118,8 +130,19 @@ export default {
     },
 
     getToken: async function(){
-        return localStorage.getItem(token)
-    }
+        return localStorage.getItem(TOKEN_KEY)
+    },
 
+    isUserLogged: async function(){
+        const token = await this.getToken()
+        //retorna true si token es distinto de null
+        //equivalente a 
+        /*
+        if (token !==null){
+            return true
+        }
+        */
+        return token !==null//devuelve true o false
+    }
 
 }

@@ -113,3 +113,10 @@ dos clases: .lds-roller y .hidden
   .global-errors{
       padding: 20% 10%;
   }
+
+  /*Botones new tweet or login*/
+  .new-tweet{
+    position: fixed;
+      right: 20px;
+      bottom: 20px;
+  }
