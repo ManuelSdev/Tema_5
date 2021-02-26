@@ -1,4 +1,5 @@
 const BASE_URL= 'http://127.0.0.1:8000'
+const TOKEN_KEY ='token'
 /*
 const url = `https://gist.githubusercontent.com/kasappeal/
 a8724e3f1c75ba515a8d9500f4b609e7/
@@ -108,8 +109,16 @@ export default {
     },
 
     login: async function (user) {
-        const url=`${BASE_URL}/auth/login`
+        const url=`${BASE_URL}/auth/login`;
         return await this.post(url, user)
+    }, 
+    
+    saveToken: async function(token){
+        localStorage.setItem(TOKEN_KEY, token)
+    },
+
+    getToken: async function(){
+        return localStorage.getItem(token)
     }
 
 

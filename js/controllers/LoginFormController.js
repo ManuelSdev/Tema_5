@@ -11,8 +11,6 @@ export default class LoginFormController extends BaseController{
         this.element.addEventListener('submit', async (event)=>{
             //Evitamos que se envie el formulario (comportamiento por defecto)
             event.preventDefault()
-            //Muestra en consola los elementos del form al pulsar login
-            console.log('SE ENVIA EL FORMULARIO', this.element.elements)
             const user={
                 //Los datos que metemos están en la propiedad value dentro de cada name
                 username: this.element.elements.email.value,
@@ -20,11 +18,14 @@ export default class LoginFormController extends BaseController{
             }
             this.publish(this.events.START_LOADING)
             try {
-                const data = await dataService.registerUser(user)
-                alert('Usuario creado con éxito!!')
-                //Nos redirige a login.html si el try va ok
-                window.location.href="/login.html"
-                console.log('USUARIO CREADO', data)
+                
+                const data = await dataService.login(user)
+                //console.log('LOGIN OK', data)
+                console.log('LOGIN OK', data.accessToken)
+                //guarda el token
+                dataService.saveToken(data.accessToken)
+                //retornamos a página principal una vez completada la operación de login
+                window.location.href="/";
             } catch(error) {
                 this.publish(this.events.ERROR, error);
             } finally {

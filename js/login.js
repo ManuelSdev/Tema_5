@@ -18,6 +18,8 @@ window.addEventListener('DOMContentLoaded', async (event) => {
     
     const formElement = document.querySelector('form')
     const formController = new LoginFormController(formElement)
+    //Tb sirve hacer directamente new LoginFormController(formElement), sin guardarlo en una variable...
+    //...total, la variable no se utiliza
 
 
 });
