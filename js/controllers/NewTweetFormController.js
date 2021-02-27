@@ -15,7 +15,8 @@ export default class NewTweetFormController extends BaseController{
         const userIsLogged = await dataService.isUserLogged();
         if (!userIsLogged) {
             //Si no lo está, o mandamos al login
-            window.location.href = '/login.html';
+            //y despues (next) de vuelta a la página del tweet ya logado
+            window.location.href = '/login.html?next=/new-tweet.html';
         } else {
             //Si está logado, publicamos evento de ocultación del loader
             

@@ -24,8 +24,15 @@ export default class LoginFormController extends BaseController{
                 console.log('LOGIN OK', data.accessToken)
                 //guarda el token
                 dataService.saveToken(data.accessToken)
+                        // TODO: mejorar el control de los query params
+                let next = '/';
+                const queryParams = window.location.search.replace('?', '');  // ?next=otrapagina -> next=otrapagina
+                const queryParamsParts = queryParams.split('=');
+                if (queryParamsParts.length >= 2 && queryParamsParts[0] === 'next') {
+                    next = queryParamsParts[1];
+                  }
                 //retornamos a página principal una vez completada la operación de login
-                window.location.href="/";
+                window.location.href=next;
             } catch(error) {
                 this.publish(this.events.ERROR, error);
             } finally {
