@@ -34,9 +34,9 @@ export default {
     }
     */
     //FORMA AUTENTICA CON SYNC AWAIT SIN USAR NEW PROMISE
-    getTweets: async () => {
+    getTweets: async function (){
        // const url=`${BASE_URL}/api/posts`
-       const url=`${BASE_URL}/api/messages?_expand=user`
+       const url=`${BASE_URL}/api/messages?_expand=user&_sort=id&_order=desc`;
         const response = await fetch(url)
         if (response.ok) {
             const data = await response.json()
@@ -46,9 +46,12 @@ export default {
             //Queremos atributos con nombres como author, message, y date para que se lo trague el view.js
             //return data
             return data.map(tweet =>{
+                console.log(tweet.user)
                 return{
+                    
                     message: tweet.message,
-                    date: tweet.createdAt,
+                    //Si el tuit no tiene createdAt, pilla el updatedAt
+                    date: tweet.createdAt || tweet.updatedAt,
                     author: tweet.user.username
                 }
             })
@@ -100,17 +103,23 @@ export default {
     }
     */
     //REFACTORIZAMOS PARA AGRUPAR LOS MÉTODOS POST (registerUser y login) EN UN METH
-    post: async (url, postData)=>{
+    post: async function (url, postData){
         const config ={
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(postData)
+        }
+        const token =await this.getToken()
+        if(token){
+            config.headers['Authorization']=`Bearer ${token}`
         }
         const response =await fetch (url, config)
         const data=  await response.json()
         if(response.ok){
             return data
         }else{
+            // TODO: mejorar gestión de errores
+            // TODO: si la respuesta es un 401 no autorizado, debemos borrar el token (si es que lo tenemos);
             throw new Error(data.message || JSON.stringify(data))
         }
     },
@@ -143,6 +152,10 @@ export default {
         }
         */
         return token !==null//devuelve true o false
+    },
+    saveTweet: async function(tweet) {
+        console.log(tweet.user)
+        const url = `${BASE_URL}/api/messages`;
+        return await this.post(url, tweet);
     }
-
 }
