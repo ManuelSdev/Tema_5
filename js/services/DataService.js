@@ -48,8 +48,7 @@ export default {
             return data.map(tweet =>{
                 console.log(tweet.user)
                 return{
-                    
-                    message: tweet.message,
+                    message: tweet.message.replace(/(<([^>]+)>)/gi, ""),
                     //Si el tuit no tiene createdAt, pilla el updatedAt
                     date: tweet.createdAt || tweet.updatedAt,
                     author: tweet.user.username
