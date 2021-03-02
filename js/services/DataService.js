@@ -35,6 +35,8 @@ export default {
     */
     //FORMA AUTENTICA CON SYNC AWAIT SIN USAR NEW PROMISE
     getTweets: async function (){
+        //cogemos el usuario actualmente autenticado
+        const currentUser = await this.getUser();
        // const url=`${BASE_URL}/api/posts`
        const url=`${BASE_URL}/api/messages?_expand=user&_sort=id&_order=desc`;
         const response = await fetch(url)
@@ -46,12 +48,14 @@ export default {
             //Queremos atributos con nombres como author, message, y date para que se lo trague el view.js
             //return data
             return data.map(tweet =>{
-                console.log(tweet.user)
+                //console.log(tweet.user)
                 return{
                     message: tweet.message.replace(/(<([^>]+)>)/gi, ""),
                     //Si el tuit no tiene createdAt, pilla el updatedAt
                     date: tweet.createdAt || tweet.updatedAt,
-                    author: tweet.user.username
+                    author: tweet.user.username,
+                    image: tweet.image || null,
+                    canBeDeleted: currentUser ? currentUser.userId === tweet.userId : false
                 }
             })
         } else {
@@ -101,25 +105,42 @@ export default {
         }
     }
     */
-    //REFACTORIZAMOS PARA AGRUPAR LOS MÉTODOS POST (registerUser y login) EN UN METH
-    post: async function (url, postData){
-        const config ={
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(postData)
+
+    post: async function(url, postData, json=true) {
+        return await this.request('POST', url, postData, json);
+    },
+
+    delete: async function(url) {
+        return await this.request('DELETE', url, {});
+    },
+
+    put: async function(url, putData, json=true) {
+        return await this.request('PUT', url, putData, json);
+    },
+    request: async function(method, url, postData, json=true) {
+        const config = {
+            method: method,
+            headers: {},
+            body: null
+        };
+        if (json) {
+            config.headers['Content-Type'] = 'application/json';
+            config.body = JSON.stringify(postData);  // convierte el objeto de usuarios en un JSON
+        } else {
+            config.body = postData;
         }
-        const token =await this.getToken()
-        if(token){
-            config.headers['Authorization']=`Bearer ${token}`
+        const token = await this.getToken();
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
         }
-        const response =await fetch (url, config)
-        const data=  await response.json()
-        if(response.ok){
-            return data
-        }else{
+        const response = await fetch(url, config);
+        const data = await response.json();  // respuesta del servidor sea OK o sea ERROR.
+        if (response.ok) {
+            return data;
+        } else {            
             // TODO: mejorar gestión de errores
             // TODO: si la respuesta es un 401 no autorizado, debemos borrar el token (si es que lo tenemos);
-            throw new Error(data.message || JSON.stringify(data))
+            throw new Error(data.message || JSON.stringify(data));
         }
     },
     //ENTONCES, registerUser() y login() SE SIMPLIFICAN PORQUE LLAMAN AL METH post()
@@ -153,8 +174,46 @@ export default {
         return token !==null//devuelve true o false
     },
     saveTweet: async function(tweet) {
-        console.log(tweet.user)
+        //console.log(tweet.user)
         const url = `${BASE_URL}/api/messages`;
-        return await this.post(url, tweet);
+        if (tweet.image) {//Si el tuit viene con imagen
+            const imageURL = await this.uploadImage(tweet.image);//subo la imagen al servidor y consigo su url
+            //reemplazo los datos de la imagen por su url
+            tweet.image = imageURL;
+        }
+        return await this.post(url, tweet);//Guardo en el servidor el tuit con la imagen
+    },
+    uploadImage: async function(image) {
+        const form = new FormData();
+        form.append('file', image);
+        //Mete en la url en end point del backend para subir archivos
+        const url = `${BASE_URL}/upload`;
+        const response = await this.post(url, form, false);
+        //console.log('uploadImage', response)
+        //Si no existe respuesta o path, devolvemos un null
+        return response.path || null;
+    },
+    getUser: async function() {
+        //Intento pillar info del user y si no lo consiguo, devuelvo un null
+        try {
+            const token = await this.getToken();
+            const tokenParts = token.split('.');
+            if (tokenParts.length !== 3) {//Si la longitud (número de elementos del array) del token es distinta de 3
+                return null;//retorno null y salgo del meth
+            }
+            //en caso de que la longitud sea  3, hago lo que sigue
+            const payload = tokenParts[1]; // cogemos el payload, codificado en base64
+            //Este payload puede que no sea un json, por eso usamos try catch
+            const jsonStr = atob(payload); // descodificamos el base64
+            const { userId, username } = JSON.parse(jsonStr); // parseamos el JSON del token descodificado
+            return { userId, username };
+        } catch (error) {
+            return null;
+        }
+    },
+
+    deleteTweet: async function(tweet) {
+        const url = `${BASE_URL}/api/messages/${tweet.id}`;
+        return await this.delete(url);
     }
 }

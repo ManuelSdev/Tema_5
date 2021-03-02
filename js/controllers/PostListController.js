@@ -11,6 +11,15 @@ export default class PostListController extends BaseController{
         for (const tweet of tweets){
             const article = document.createElement('article')
             article.innerHTML= tweetView(tweet)
+            const deleteButton = article.querySelector('button');
+            if (deleteButton) {
+                deleteButton.addEventListener('click',async ev=>{
+                    console.log('BORRAR EL TUIT', tweet)
+                    await dataService.deleteTweet(tweet)
+                })
+                
+                //new DeleteButtonController(deleteButton, tweet);
+            }
             //Ahora hacemos referencia al elemento del DOM
             //que es controlado por este controlador
             this.element.appendChild(article)

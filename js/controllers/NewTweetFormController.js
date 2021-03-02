@@ -47,13 +47,13 @@ export default class NewTweetFormController extends BaseController{
             event.preventDefault();  // cancelamos el envío del formulario (comportamiento por defecto)
             const tweet = {
                 message: this.element.elements.message.value,
-                //image: null
+                image: null
             }
-            /*
+            
             if (this.element.elements.file.files.length > 0) {
                 tweet.image = this.element.elements.file.files[0];
             }
-            */
+            
             this.publish(this.events.START_LOADING);
             try {
                 //Publico el mensaje y si va bien mando al usuario al index
