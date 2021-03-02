@@ -8,14 +8,21 @@ import {tweetView} from '../views.js'
 export default class PostListController extends BaseController{
 
     render(tweets){
+        this.element.innerHTML = ''; // borramos cualquier tweet que pueda verse en pantalla
         for (const tweet of tweets){
             const article = document.createElement('article')
             article.innerHTML= tweetView(tweet)
             const deleteButton = article.querySelector('button');
             if (deleteButton) {
                 deleteButton.addEventListener('click',async ev=>{
-                    console.log('BORRAR EL TUIT', tweet)
-                    await dataService.deleteTweet(tweet)
+                    const deleteConfirmed =confirm('¿Seguro que quieres borrarlo?')
+                    if(deleteConfirmed){
+                        console.log('BORRAR EL TUIT', tweet)
+                        await dataService.deleteTweet(tweet)
+                        article.remove() //borra inmediatamente el tuit para que el usuario no lo vea
+                        await this.loadPost() //recarga lista de tuits tras borrar
+                    }
+
                 })
                 
                 //new DeleteButtonController(deleteButton, tweet);
