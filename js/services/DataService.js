@@ -50,6 +50,7 @@ export default {
             return data.map(tweet =>{
                 //console.log(tweet.user)
                 return{
+                    id: tweet.id,
                     message: tweet.message.replace(/(<([^>]+)>)/gi, ""),
                     //Si el tuit no tiene createdAt, pilla el updatedAt
                     date: tweet.createdAt || tweet.updatedAt,
@@ -111,6 +112,7 @@ export default {
     },
 
     delete: async function(url) {
+        
         return await this.request('DELETE', url, {});
     },
 
@@ -118,6 +120,7 @@ export default {
         return await this.request('PUT', url, putData, json);
     },
     request: async function(method, url, postData, json=true) {
+        
         const config = {
             method: method,
             headers: {},
@@ -213,6 +216,7 @@ export default {
     },
 
     deleteTweet: async function(tweet) {
+        console.log(tweet)
         const url = `${BASE_URL}/api/messages/${tweet.id}`;
         return await this.delete(url);
     }
